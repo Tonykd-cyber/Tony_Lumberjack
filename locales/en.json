@@ -1,6 +1,21 @@
 {
-    "grand_theft_auto": "vol de voiture",
-    "male": "homme",
-    "female": "femme",
-    "suspect_sex": "le suspect est %s"
-  }
+  "A1": "Lumber Mill",
+  "A2": "Logging",
+  "A3": "Wood Processing",
+  "A4": "Sell Lumber",
+  "A5": "Pick Up",
+  "A6": "Put In - Planks",
+  "A7": "Cutting",
+  "A8": "Lumber Mill",
+  "A9": "No Electric Saw",
+  "A10": "Chop Tree",
+  "A11": "Put In - Logs",
+  "A12": "Start Work",
+  "A13": "Return Vehicle",
+  "A14": "Logging Tools",
+  "A15": "Sell Planks",
+  "A16": "Wood Processing",
+  "A17": "Not Enough Wood",
+  "A18": "Selling",
+  "A19": "Not Enough Planks"
+}
