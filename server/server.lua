@@ -14,8 +14,7 @@ end
 
  
 local function FoundExploiter(src,reason)
-	-- ADD YOUR BAN EVENT HERE UNTIL THEN IT WILL ONLY KICK THE PLAYER --
-	DropPlayer(src,reason)
+ 	DropPlayer(src,reason)
 end
 
 RegisterServerEvent('Tony:lumberaddtrunk')
@@ -51,7 +50,7 @@ AddEventHandler('Tony:sell', function()
 end)
 
 ox_inventory:RegisterShop('LumberjackShop', {
-    name = '伐木商店',
+    name = locale('A20'),
     inventory = {
         { name = 'electric_saw', price = 500 },
     } 
