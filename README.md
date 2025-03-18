@@ -1,18 +1,18 @@
 # Tony_Lumberjack
 	['electric_saw'] = {
-		label = '电锯',
+		label = 'electricsaw',
 		weight = 1000,
 		stack = false,
 		close = false,
 	},
 	["wood_log"] = {
-		label = "原木",
+		label = "woodlog",
 		weight = 500,
 		stack = true,
 		close = true,
 	},
 	["woodplank"] = {
-		label = "木板",
+		label = "woodplank",
 		weight = 500,
 		stack = true,
 		close = true,
