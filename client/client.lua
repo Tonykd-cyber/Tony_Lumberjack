@@ -200,7 +200,7 @@ function picktreedddpc()
 				name = 'additempack',   -- 唯一标识符
 				event = "Tony:additempack",
 				icon = "fa-solid fa-cube",
-				label = '捡起',
+				label = locale('A5'),
 				distance = 1.5
 			}
 		}) 
@@ -209,7 +209,7 @@ function picktreedddpc()
 			{
 				name = 'packtrunk',
 				icon = 'fa-solid fa-leaf',
-				label = '放入-木板',
+				label = locale('A6'),
 				offset = vec3(0.5, 0, 0.5),
 				distance = 2,
 				canInteract = function(entity, distance, coords, name)
@@ -289,14 +289,16 @@ function canPickUp()
 
 		-- 进度条设置与使用
 		if lib.progressBar({
-			label = '切割中',
+			label =locale('A7'),
 			duration = 7000,  -- 进度条时长
 			position = 'bottom',
 			useWhileDead = false,
 			canCancel = false,
 			disable = { car = true, move = true, combat = true },
-			anim = { dict = 'bzzz_animation_chainsaw', clip = 'animation_chainsaw' },
-			prop = { model = 'bzzz_prop_wood_chainsaw', bone = 57005, pos = vec3(0.22, 0.41, 0.1), rot = vec3(-8.0, 309.0, -27.0) }
+		--	anim = { dict = 'bzzz_animation_chainsaw', clip = 'animation_chainsaw' },
+		--	prop = { model = 'bzzz_prop_wood_chainsaw', bone = 57005, pos = vec3(0.22, 0.41, 0.1), rot = vec3(-8.0, 309.0, -27.0) }
+			anim = { dict = 'anim@heists@fleeca_bank@drilling', clip = 'drill_straight_fail' },
+	    	prop = { model = 'prop_tool_consaw', bone = 28422, pos = vec3(0.00, 0.00, 0.00), rot = vec3(0.00, 0.00, 90.00) }
 		}) then
 			ESX.Game.DeleteObject(nearbyObject)
 			table.remove(weedPlants, nearbyID)
@@ -309,8 +311,8 @@ function canPickUp()
 	else
 		lib.notify({
 			id = 'no_electricsaw',
-			title = '伐木场',
-			description = '没有带电锯',
+			title = locale('A8'),
+			description =  locale('A9'),
 			showDuration = 3000,
 			position = 'top',
 			style = {
@@ -393,12 +395,25 @@ AddEventHandler('onResourceStop', function(resource)
 		for k, v in pairs(weedPlants) do
 			ESX.Game.DeleteObject(v)
 		end
+		woodremove()
 	end
 end)
 
  
  
+
 function woodadd()
+ 	 ox_target:addModel('bzzz_lumberjack_wood_pack_1a_dynamic', {
+		{
+			name = 'addwood_long',
+			onSelect = function()
+				woodaddcar()
+			end,
+			icon = 'fa-solid fa-leaf',
+			label = locale('A5'),
+			distance = 4.5
+		}
+	}) 
 	local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)
     local playerHeading = GetEntityHeading(playerPed)
@@ -411,6 +426,8 @@ function woodadd()
 		 PlaceObjectOnGroundProperly(object)
 		 DropObject = object
 	end)
+	 
+ 
 end	
 
 function woodremove()
@@ -429,32 +446,33 @@ function woodremove()
 end	
 local haswoodlog = false
 function woodaddcar()
-	woodremove()
-	haswoodlog = true
-    local ped = PlayerPedId()
-    local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 3.0, 0.5))
-    local hash = GetHashKey('bzzz_lumberjack_wood_pack_1a_dynamic')
+	ox_target:removeModel('bzzz_lumberjack_wood_pack_1a_dynamic', 'addwood_long')
+		woodremove()
+		haswoodlog = true
+		local ped = PlayerPedId()
+		local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 3.0, 0.5))
+		local hash = GetHashKey('bzzz_lumberjack_wood_pack_1a_dynamic')
 
-    if DoesEntityExist(woodlong) then
-        DetachEntity(woodlong, false, false)
-        DeleteEntity(woodlong)
-        woodlong = nil
-    end
- 
-    RequestModel(hash)
-    while not HasModelLoaded(hash) do 
-        Citizen.Wait(0) 
-    end
-
-    woodlong = CreateObjectNoOffset(hash, x, y, z, true, false)
-    SetModelAsNoLongerNeeded(hash)
-
-    LoadAnimDict("missfinale_c2mcs_1")
-    AttachEntityToEntity(woodlong, ped, GetPedBoneIndex(ped, 28422),  0.3, -0.25, 0.0, 90.0, 90.0, 0.0, 0.0,false, false, true, false, 2, true)
-    if not IsEntityPlayingAnim(ped, 'missfinale_c2mcs_1', 'fin_c2_mcs_1_camman', 3) then
-        TaskPlayAnim(ped, 'missfinale_c2mcs_1', 'fin_c2_mcs_1_camman',8.0, 8.0, -1, 50, 0, false, false, false)
-    end
+		if DoesEntityExist(woodlong) then
+			DetachEntity(woodlong, false, false)
+			DeleteEntity(woodlong)
+			woodlong = nil
+		end
 	
+		RequestModel(hash)
+		while not HasModelLoaded(hash) do 
+			Citizen.Wait(0) 
+		end
+
+		woodlong = CreateObjectNoOffset(hash, x, y, z, true, false)
+		SetModelAsNoLongerNeeded(hash)
+
+		LoadAnimDict("missfinale_c2mcs_1")
+		AttachEntityToEntity(woodlong, ped, GetPedBoneIndex(ped, 28422),  0.3, -0.25, 0.0, 90.0, 90.0, 0.0, 0.0,false, false, true, false, 2, true)
+		if not IsEntityPlayingAnim(ped, 'missfinale_c2mcs_1', 'fin_c2_mcs_1_camman', 3) then
+			TaskPlayAnim(ped, 'missfinale_c2mcs_1', 'fin_c2_mcs_1_camman',8.0, 8.0, -1, 50, 0, false, false, false)
+		end
+  
 end
 
 function woodlogremove()
@@ -511,12 +529,12 @@ function addoxtarger()
 				canPickUp()
 			end,
 			icon = 'fa-solid fa-leaf',
-			label = '砍树',
+			label = locale('A10'),
 			distance = 4.5
 		}
 	}) 
 
-	ox_target:addModel('bzzz_lumberjack_wood_pack_1a_dynamic', {
+	--[[ox_target:addModel('bzzz_lumberjack_wood_pack_1a_dynamic', {
 		{
 			name = 'addwood_long',
 			onSelect = function()
@@ -526,13 +544,13 @@ function addoxtarger()
 			label = '捡起',
 			distance = 4.5
 		}
-	}) 
+	}) ]]
 
 	ox_target:addGlobalVehicle({
 		{
 			name = 'lumberaddtrunk',
 			icon = 'fa-solid fa-leaf',
-			label = '放入-原木',
+			label = locale('A11'),
 			offset = vec3(0.5, 0, 0.5),
 			distance = 2,
 			canInteract = function(entity, distance, coords, name)
@@ -548,7 +566,7 @@ end
  
 function removetarger()
 	ox_target:removeModel('prop_tree_cedar_03', 'picktree')
-	ox_target:removeModel('bzzz_lumberjack_wood_pack_1a_dynamic', 'addwood_long')
+	--ox_target:removeModel('bzzz_lumberjack_wood_pack_1a_dynamic', 'addwood_long')
 	ox_target:removeGlobalVehicle('lumberaddtrunk')
 	print('移除目标选项')
 end	
@@ -566,7 +584,7 @@ ox_target:addBoxZone({
         {
             name = 'Tonylumberjack_SpawnVehicle',
 			icon = 'fa-solid fa-leaf',
-			label = '开始工作',
+			label = locale('A12'),
             distance = 2.0,
 			onSelect = function()
 				SpawnVehicle()
@@ -575,7 +593,7 @@ ox_target:addBoxZone({
 		{
             name = 'Tonylumberjack_DeleteVehicle',
 			icon = 'fa-solid fa-leaf',
-			label = '返还车辆',
+			label = locale('A13'),
             distance = 2.0,
 			onSelect = function()
 				DeleteVehicle()
@@ -584,7 +602,7 @@ ox_target:addBoxZone({
 		{
             name = 'Tonylumberjack_Shot',
 			icon = 'fa-solid fa-leaf',
-			label = '伐木工具',
+			label = locale('A14'),
             distance = 2.0,
 			onSelect = function()
 				exports.ox_inventory:openInventory('shop', { type = 'LumberjackShop'})
@@ -603,7 +621,7 @@ ox_target:addBoxZone({
         {
             name = 'woodlog',
 			icon = 'fa-solid fa-leaf',
-			label = '出售木板',
+			label = locale('A15'),
             distance = 2.0,
 			event = 'Tony:sell'
         } 
@@ -621,7 +639,7 @@ ox_target:addBoxZone({
 		{
 			name = 'Tonylumberjack_SpawnVehicle',
 			icon = 'fa-solid fa-leaf',
-			label = '木头加工',
+			label = locale('A16'),
 			distance = 2.0,
 			onSelect = function()
 				woodlogcut()
@@ -642,7 +660,7 @@ function addTonyremovelu()
 			{
 				name = 'Tonylumberjack_SpawnVehicle',
 				icon = 'fa-solid fa-leaf',
-				label = '木头加工',
+				label = locale('A16'),
 				distance = 2.0,
 				onSelect = function()
 					woodlogcut()
@@ -781,8 +799,8 @@ function woodlogcut()
  	else
 		lib.notify({
 			id = 'no_electricsaw',
-			title = '伐木场',
-			description = '没有足够的木头',
+			title = locale('A1'),
+			description = locale('A17'),
 			showDuration = 3000,
 			position = 'top',
 			style = {
@@ -944,7 +962,7 @@ local plank = ox_inventory:Search('count', 'woodplank')
 	if plank >= 1 then 
 		if lib.progressBar({
 			duration = 5000,
-			label = '出售中',
+			label = locale('A18'),
             useWhileDead = false,
             canCancel = false,
             disable = { car = true, move = true, combat = true },
@@ -956,8 +974,8 @@ local plank = ox_inventory:Search('count', 'woodplank')
 	else
 		lib.notify({
 			id = 'no_electricsaw',
-			title = '伐木场',
-			description = '没有足够的木板',
+			title = locale('A1'),
+			description = locale('A19'),
 			showDuration = 3000,
 			position = 'top',
 			style = {
