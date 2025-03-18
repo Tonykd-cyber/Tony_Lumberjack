@@ -17,3 +17,5 @@
 		stack = true,
 		close = true,
 	}, 
+
+xsoundogg add to  xsound\html\sounds
